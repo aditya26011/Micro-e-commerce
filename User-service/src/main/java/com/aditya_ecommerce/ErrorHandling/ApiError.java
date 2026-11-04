@@ -1,0 +1,25 @@
+package com.aditya_ecommerce.ErrorHandling;
+
+import lombok.*;
+import org.springframework.http.HttpStatusCode;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Data
+public class ApiError {
+    private LocalDateTime timeStamp;
+    private String error;
+    private HttpStatusCode httpStatusCode;
+    private List<String> Suberrors;
+
+    public ApiError() {
+        this.timeStamp = LocalDateTime.now();
+    }
+
+    public ApiError(String error, HttpStatusCode httpStatusCode) {
+        this();
+        this.error = error;
+        this.httpStatusCode = httpStatusCode;
+    }
+}
