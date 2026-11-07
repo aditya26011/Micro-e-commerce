@@ -1,6 +1,7 @@
 package com.aditya_ecommerce.ErrorHandling;
 
 import com.aditya_ecommerce.exceptions.DuplicateEmailException;
+import com.aditya_ecommerce.exceptions.InvalidUserNameOrPasswordException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -38,5 +39,14 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(apiError,HttpStatus.BAD_REQUEST);
 
+    }
+
+    @ExceptionHandler(InvalidUserNameOrPasswordException.class)
+    public ResponseEntity<ApiError> handelInvalidUserNameOrPassword(Exception e){
+        ApiError apiError=new ApiError();
+        apiError.setHttpStatusCode(HttpStatus.NOT_FOUND);
+        apiError.setError(e.getLocalizedMessage());
+
+        return new ResponseEntity<>(apiError,HttpStatus.NOT_FOUND);
     }
 }

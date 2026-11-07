@@ -3,15 +3,18 @@ package com.aditya_ecommerce.services;
 
 import com.aditya_ecommerce.dtos.SignUpRequestDto;
 import com.aditya_ecommerce.dtos.SignUpResponseDto;
+import com.aditya_ecommerce.dtos.UserCredentialDto;
 import com.aditya_ecommerce.entity.User;
 import com.aditya_ecommerce.entity.enums.Roles;
 import com.aditya_ecommerce.exceptions.DuplicateEmailException;
+import com.aditya_ecommerce.exceptions.InvalidUserNameOrPasswordException;
 import com.aditya_ecommerce.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.naming.AuthenticationException;
 import java.util.Optional;
 
 @Service
@@ -43,5 +46,19 @@ public class UserService {
     signUpResponseDto.setId(SavedUser.getId());
 
     return signUpResponseDto;
+    }
+
+    public  UserCredentialDto getUserByEmail(String email) {
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new InvalidUserNameOrPasswordException("Invalid credentials"));
+
+        UserCredentialDto credentialDto=new UserCredentialDto();
+        credentialDto.setUserId(user.getId());
+        credentialDto.setEmail(user.getEmail());
+        credentialDto.setRoles(user.getRole());
+        credentialDto.setPasswordHash(user.getPassword());
+
+        return credentialDto;
     }
 }

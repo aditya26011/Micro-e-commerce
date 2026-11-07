@@ -16,7 +16,10 @@ public class SecurityConfig {
                 .sessionManagement(sessionConfig->sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(csrConfig->csrConfig.disable())
                 .authorizeHttpRequests(requestConfig->
-                        requestConfig.requestMatchers(HttpMethod.POST,"/users/register").permitAll()
+                        requestConfig
+                                .requestMatchers(HttpMethod.GET,"/internal/**").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/users/register")
+                                .permitAll()
                                 .anyRequest()
                                 .authenticated()
 
